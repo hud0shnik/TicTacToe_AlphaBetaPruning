@@ -46,19 +46,47 @@ bool userTurn(char m[9]) {
 
 
 bool botTurn(char m[9]) {
-    if (m[4] == ' ') {
-        m[4] = 'X';
+    if (m[1] == ' ') {
+        m[1] = 'X';
         return true;
     }
     if (m[0] == ' ') {
         m[0] = 'X';
         return true;
     }
-    if (m[8] == ' ') {
-        m[8] = 'X';
+    if (m[2] == ' ') {
+        m[2] = 'X';
         return true;
     }
     printMap(m);
+}
+
+bool checkWin(char m[], char c) {
+    if ((m[0] == m[1])&& (c==m[0])&&(m[2] == c)) {
+        return true;
+    }
+    if ((m[3] == m[4]) &&(c==m[3])&& (m[5] == c)) {
+        return true;
+    }
+    if ((m[6] == m[7]) && (c == m[6]) && (m[8] == c)) {
+        return true;
+    }
+    if ((m[0] == m[3]) && (c == m[3]) && (m[6] == c)) {
+        return true;
+    }
+    if ((m[1] == m[4]) && (c == m[1]) && (m[7] == c)) {
+        return true;
+    }
+    if ((m[2] == m[5]) && (c == m[2]) && (m[8] == c)) {
+        return true;
+    }
+    if ((m[0] == m[4]) && (c == m[0]) && (m[8] == c) ){
+        return true;
+    }
+    if ((m[6] == m[4]) && (c == m[6]) && (m[2] == c)) {
+        return true;
+    }
+    return false;
 }
 
 int main()
@@ -67,15 +95,21 @@ int main()
     bool userWin = false;
     bool botWin = false;
     cout << "\nTicTacToe\n";
-    cout << endl << "USER (O)      BOT (X)";
+    cout <<  "USER (O)      BOT (X)"<< endl;
 
     printMap(map);
     while (!isFull(map)) {
         userTurn(map);
+        if (checkWin(map,'O')){
+            cout  << "You Won!" << endl;
+            return 0;
+        }
         botTurn(map);
+        if (checkWin(map, 'X')) {
+            printMap(map);
+            cout << "Bot Won!" << endl;
+            return 0;
+        }
     }
-
-
-
-    cout << "\nThat's all!\n";
+    cout << "Draw!" << endl;
 }
