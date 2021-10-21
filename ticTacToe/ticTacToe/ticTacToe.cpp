@@ -34,25 +34,45 @@ bool userTurn(char m[9]) {
         if ((turn == "1") || (turn == "2") || (turn == "3") || (turn == "4") || (turn == "5") || (turn == "6") || (turn == "7") || (turn == "8") || (turn == "9")) {
             if (m[stoi(turn)-1] == ' ') {
                 m[stoi(turn)-1] = 'O';
+                printMap(m);
                 return true;
             }
         }
         cout << "Wrong input, try again" << endl;
     }
+    printMap(m);
     return false;
+}
+
+
+bool botTurn(char m[9]) {
+    if (m[4] == ' ') {
+        m[4] = 'X';
+        return true;
+    }
+    if (m[0] == ' ') {
+        m[0] = 'X';
+        return true;
+    }
+    if (m[8] == ' ') {
+        m[8] = 'X';
+        return true;
+    }
+    printMap(m);
 }
 
 int main()
 {
     char map[9] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
-
+    bool userWin = false;
+    bool botWin = false;
     cout << "\nTicTacToe\n";
     cout << endl << "USER (O)      BOT (X)";
 
     printMap(map);
     while (!isFull(map)) {
         userTurn(map);
-        printMap(map);
+        botTurn(map);
     }
 
 
