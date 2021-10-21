@@ -30,7 +30,9 @@ bool userTurn(char m[9]) {
 	string turn;
 	while (true)
 	{
+		cout << "Your choice: ";
 		cin >> turn;
+		cout << endl;
 		if ((turn == "1") || (turn == "2") || (turn == "3") || (turn == "4") || (turn == "5") || (turn == "6") || (turn == "7") || (turn == "8") || (turn == "9")) {
 			if (m[stoi(turn) - 1] == ' ') {
 				m[stoi(turn) - 1] = 'O';
@@ -48,12 +50,16 @@ bool botTurn(char m[9]) {
 		m[0] = 'X';
 		return true;
 	}
-	if (m[1] == ' ') {
-		m[1] = 'X';
+	if (m[4] == ' ') {
+		m[4] = 'X';
 		return true;
 	}
-	if (m[2] == ' ') {
-		m[2] = 'X';
+	if (m[7] == ' ') {
+		m[7] = 'X';
+		return true;
+	}
+	if (m[5] == ' ') {
+		m[5] = 'X';
 		return true;
 	}
 }
@@ -86,29 +92,57 @@ bool checkWin(char m[], char c) {
 	return false;
 }
 
+void Clear() {
+	//функция для очистки терминала
+#if defined _WIN32
+	system("cls");
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+	system("clear");
+#elif defined (__APPLE__)
+	system("clear");
+#endif
+}
+
 int main()
 {
-	char map[9] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
-	bool userWin = false;
-	bool botWin = false;
-	cout << "\nTicTacToe\n";
-	cout << "USER (O)      BOT (X)" << endl;
 
-	printMap(map);
-	while (!isFull(map)) {
-		userTurn(map);
-		if (checkWin(map, 'O')) {
-			cout << "You Won!" << endl;
-			return 0;
-		}
-		botTurn(map);
+	while (true)
+	{
+		cout << "\nTicTacToe\n";
+		cout << "USER (O)      BOT (X)" << endl;
+		char map[9] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
+		bool userWin = false;
+		bool botWin = false;
+
 		printMap(map);
-		if (checkWin(map, 'X')) {
+		while (!isFull(map)) {
+			userTurn(map);
+			if (checkWin(map, 'O')) {
+				cout << "You Won!" << endl;
+				break;
+			}
+			botTurn(map);
 			printMap(map);
-			cout << "Bot Won!" << endl;
-			return 0;
+			if (checkWin(map, 'X')) {
+				printMap(map);
+				cout << "Bot Won!" << endl;
+				break;
+			}
+			if (isFull(map)) {
+				cout << "Draw!" << endl;
+				break;
+			}
 		}
+
+
+		cout << "\nOne more time? (y/n)" << endl;
+		string answ;
+		cin >> answ;
+		if (answ == "y" || answ == "yes") {
+			Clear();
+			continue;
+		}
+
+		return 0;
 	}
-	cout << "Draw!" << endl;
-	return 0;
 }
