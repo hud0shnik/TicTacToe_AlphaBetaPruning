@@ -2,8 +2,20 @@
 #include <string>
 using namespace std;
 
+void Clear() {
+	//функция для очистки терминала
+#if defined _WIN32
+	system("cls");
+#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+	system("clear");
+#elif defined (__APPLE__)
+	system("clear");
+#endif
+}
+
 void printMap(char m[9])
 {
+	Clear();
 	//вывод игрового поля в консоль
 	cout << endl;
 	cout << m[0] << "|" << m[1] << "|" << m[2] << endl;
@@ -92,16 +104,6 @@ bool checkWin(char m[], char c) {
 	return false;
 }
 
-void Clear() {
-	//функция для очистки терминала
-#if defined _WIN32
-	system("cls");
-#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-	system("clear");
-#elif defined (__APPLE__)
-	system("clear");
-#endif
-}
 
 int main()
 {
@@ -109,10 +111,20 @@ int main()
 	while (true)
 	{
 		cout << "\nTicTacToe\n";
-		cout << "USER (O)      BOT (X)" << endl;
+		cout << "USER (O)      BOT (X)\n" << endl;
 		char map[9] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
 		bool userWin = false;
 		bool botWin = false;
+
+		cout << "Start? (y/n)" << endl;
+		string answ;
+		cin >> answ;
+		if (answ == "y" || answ == "yes") {
+			
+		}
+		else {
+			return 0;
+		}
 
 		printMap(map);
 		while (!isFull(map)) {
@@ -136,7 +148,6 @@ int main()
 
 
 		cout << "\nOne more time? (y/n)" << endl;
-		string answ;
 		cin >> answ;
 		if (answ == "y" || answ == "yes") {
 			Clear();
