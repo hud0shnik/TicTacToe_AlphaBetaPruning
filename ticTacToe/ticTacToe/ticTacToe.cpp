@@ -1,20 +1,23 @@
 ﻿#include<iostream>
 #include <string>
+
 using namespace std;
+
+int botChoice;
+char m[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 
 void Clear() {
 	//функция для очистки терминала
 #if defined _WIN32
 	system("cls");
-#elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+#elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
 	system("clear");
-#elif defined (__APPLE__)
+#elif defined(__APPLE__)
 	system("clear");
 #endif
 }
 
-void printMap(char m[9])
-{
+void printMap() {
 	Clear();
 	//вывод игрового поля в консоль
 	cout << endl;
@@ -25,58 +28,7 @@ void printMap(char m[9])
 	cout << m[6] << "|" << m[7] << "|" << m[8] << endl;
 }
 
-bool isFull(char m[9])
-{
-	for (int i = 0; i < 9; i++)
-	{
-		if (m[i] == ' ')
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-bool userTurn(char m[9]) {
-	//функция возвращает true если ход сделан
-	string turn;
-	while (true)
-	{
-		cout << "Your choice: ";
-		cin >> turn;
-		cout << endl;
-		if ((turn == "1") || (turn == "2") || (turn == "3") || (turn == "4") || (turn == "5") || (turn == "6") || (turn == "7") || (turn == "8") || (turn == "9")) {
-			if (m[stoi(turn) - 1] == ' ') {
-				m[stoi(turn) - 1] = 'O';
-				printMap(m);
-				return true;
-			}
-		}
-		cout << "Wrong input, try again" << endl;
-	}
-	return false;
-}
-
-bool botTurn(char m[9]) {
-	if (m[0] == ' ') {
-		m[0] = 'X';
-		return true;
-	}
-	if (m[4] == ' ') {
-		m[4] = 'X';
-		return true;
-	}
-	if (m[7] == ' ') {
-		m[7] = 'X';
-		return true;
-	}
-	if (m[5] == ' ') {
-		m[5] = 'X';
-		return true;
-	}
-}
-
-bool checkWin(char m[], char c) {
+bool checkWin(char c) {
 	if ((m[0] == m[1]) && (c == m[0]) && (m[2] == c)) {
 		return true;
 	}
@@ -104,53 +56,132 @@ bool checkWin(char m[], char c) {
 	return false;
 }
 
+bool isFull() {
+	for (int i = 0; i < 9; i++) {
+		if (m[i] == ' ') {
+			return false;
+		}
+	}
+	return true;
+}
 
-int main()
+bool userTurn() {
+	//функция возвращает true если ход сделан
+	string turn;
+	while (true) {
+		cout << "Your choice: ";
+		cin >> turn;
+		cout << endl;
+		if ((turn == "1") || (turn == "2") || (turn == "3") || (turn == "4") || (turn == "5") || (turn == "6") || (turn == "7") || (turn == "8") || (turn == "9")) {
+			if (m[stoi(turn) - 1] == ' ') {
+				m[stoi(turn) - 1] = 'O';
+				printMap();
+				return true;
+			}
+		}
+		cout << "Wrong input, try again" << endl;
+	}
+	return false;
+}
+
+int ab(bool flag) // The ab function
 {
+	int max = -20, min = 20;
+	int i, j, value = 1;
+	if (checkWin('X')) {
+		return 10;
+	}
+	if (checkWin('O')) {
+		return -10;
+	}
+	if (isFull()) {
+		return 0;
+	}
 
-	while (true)
-	{
-		cout << "\nTicTacToe\n";
-		cout << "USER (O)      BOT (X)\n" << endl;
-		char map[9] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
-		bool userWin = false;
-		bool botWin = false;
+	int score[9] = { 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
-		cout << "Start? (y/n)" << endl;
-		string answ;
-		cin >> answ;
-		if (answ == "y" || answ == "yes") {
-			
+	for (i = 0; i < 9; i++) {
+		if (m[i] == ' ') {
+			if (min > max) {
+				if (flag == true) {
+					m[i] = 'X';
+					value = ab(false);
+				}
+				else {
+					m[i] = 'O';
+					value = ab(true);
+				}
+				m[i] = ' ';
+				score[i] = value;
+			}
 		}
-		else {
-			return 0;
-		}
+	}
 
-		printMap(map);
-		while (!isFull(map)) {
-			userTurn(map);
-			if (checkWin(map, 'O')) {
-				cout << "You Won!" << endl;
+	if (flag) {
+		max = -20;
+		for (j = 0; j < 9; j++) {
+			if (score[j] > max && score[j] != 1) {
+				max = score[j];
+				botChoice = j;
+			}
+		}
+		return max;
+	}
+	if (!flag) {
+		min = 20;
+		for (j = 0; j < 9; j++) {
+			if (score[j] < min && score[j] != 1) {
+				min = score[j];
+				botChoice = j;
+			}
+		}
+		return min;
+	}
+}
+
+int main() {
+	cout << "\nTicTacToe\n";
+	cout << "USER (O)      BOT (X)\n" << endl;
+	cout << "Start? (y/n)" << endl;
+	string answ;
+	cin >> answ;
+
+	if (answ == "y" || answ == "yes") {
+
+	}
+	else {
+		return 0;
+	}
+
+	while (true) {
+		printMap();
+		while (!isFull()) {
+			userTurn();
+			if (checkWin('O')) {
+				cout << "You Won!!! Impossible!!!" << endl;
 				break;
 			}
-			botTurn(map);
-			printMap(map);
-			if (checkWin(map, 'X')) {
-				printMap(map);
-				cout << "Bot Won!" << endl;
+			ab(true);
+			m[botChoice] = 'X';
+			printMap();
+			if (checkWin('X')) {
+				printMap();
+				cout << "Bot Won" << endl;
 				break;
 			}
-			if (isFull(map)) {
+			if (isFull()) {
 				cout << "Draw!" << endl;
 				break;
 			}
 		}
 
-
 		cout << "\nOne more time? (y/n)" << endl;
 		cin >> answ;
 		if (answ == "y" || answ == "yes") {
 			Clear();
+			for (int i = 0; i < 9; i++)
+				m[i] = ' ';
+
 			continue;
 		}
 
