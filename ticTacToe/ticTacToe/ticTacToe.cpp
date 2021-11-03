@@ -65,8 +65,7 @@ bool isFull() {
 	return true;
 }
 
-bool userTurn() {
-	//функция возвращает true если ход сделан
+void userTurn() {
 	string turn;
 	while (true) {
 		cout << "Your choice: ";
@@ -76,12 +75,11 @@ bool userTurn() {
 			if (m[stoi(turn) - 1] == ' ') {
 				m[stoi(turn) - 1] = 'O';
 				printMap();
-				return true;
+				break;
 			}
 		}
 		cout << "Wrong input, try again" << endl;
 	}
-	return false;
 }
 
 int ab(bool flag) // The ab function
@@ -139,17 +137,22 @@ int ab(bool flag) // The ab function
 	}
 }
 
-int main() {
-	cout << "\nTicTacToe\n";
-	cout << "USER (O)      BOT (X)\n" << endl;
-	cout << "Start? (y/n)" << endl;
+bool yesOrNo() {
 	string answ;
 	cin >> answ;
 
 	if (answ == "y" || answ == "yes") {
-
+		return 1;
 	}
-	else {
+	return 0;
+	
+}
+
+int main() {
+	cout << "\nTicTacToe\n";
+	cout << "USER (O)      BOT (X)\n" << endl;
+	cout << "Start? (y/n)" << endl;
+	if (!yesOrNo()) {
 		return 0;
 	}
 
@@ -176,12 +179,12 @@ int main() {
 		}
 
 		cout << "\nOne more time? (y/n)" << endl;
-		cin >> answ;
-		if (answ == "y" || answ == "yes") {
+		
+
+		if (yesOrNo()) {
 			Clear();
 			for (int i = 0; i < 9; i++)
 				m[i] = ' ';
-
 			continue;
 		}
 
