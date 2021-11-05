@@ -25,7 +25,7 @@ void printMap() {
 	cout << endl;
 	for (int i = 0; i < SIZE; i++) {
 		for (int j = 0; j < SIZE; j++) {
-			cout << m[j+SIZE*i] << "|";
+			cout << m[j + SIZE * i] << "|";
 
 		}
 		cout << endl;
@@ -43,13 +43,45 @@ bool checkWin(char c) {
 		for (int j = 0; j < SIZE; j++) {
 			if (m[j + SIZE * i] == c) {
 				points++;
+				if (points == SIZE) {
+					return true;
+				}
+			}
+		}
+		points = 0;
+	}
+
+	for (int j = 0; j < SIZE; j++) {
+		for (int i = 0; i < SIZE; i++) {
+			if (m[j + SIZE * i] == c) {
+				points++;
+				if (points == SIZE) {
+					return true;
+				}
+			}
+		}
+		points = 0;
+	}
+
+	for (int i = 0; i <= SIZE; i++) {
+		if (m[i * (SIZE + 1)] == c) {
+			points++;
+			if (points == SIZE) {
+				return true;
 			}
 		}
 	}
-	if (points == SIZE) {
-		return true;
-	}
+	points = 0;
 
+	for (int i = 0; i <= SIZE; i++) {
+		if (m[i * (SIZE - 1)] == c) {
+			points++;
+			if (points == SIZE) {
+				return true;
+			}
+		}
+	}
+	
 
 
 	return false;
@@ -65,14 +97,16 @@ bool isFull() {
 }
 
 void userTurn() {
-	string turn;
+	string s;
+	int turn;
 	while (true) {
 		cout << "Your choice: ";
-		cin >> turn;
+		cin >> s;
+		turn = std::stoi(s);
 		cout << endl;
-		if ((std::stoi(turn) < SIZE * SIZE) & (std::stoi(turn) > -1)) {
-			if (m[stoi(turn) - 1] == ' ') {
-				m[stoi(turn) - 1] = 'O';
+		if ((turn < SIZE * SIZE) /* & (turn > -1)*/) {
+			if (m[turn] == ' ') {
+				m[turn] = 'O';
 				printMap();
 				break;
 			}
@@ -81,10 +115,9 @@ void userTurn() {
 	}
 }
 
-int ab(bool flag) {// Логика бота 
+int ab(bool flag) {// Логика бота
 	int max = -20, min = 20;
 	int i, j, value = 1;
-
 	if (checkWin('X')) {
 		return 10;
 	}
@@ -94,12 +127,11 @@ int ab(bool flag) {// Логика бота
 	if (isFull()) {
 		return 0;
 	}
-
-	int score[SIZE * SIZE] = {};
+	// массив со всеми возможными ходами, чем выше значение - тем лучше ход
+	int score[SIZE * SIZE] = {};		
 	for (int i = 0; i < SIZE * SIZE; i++) {
 		score[i] = 1;
 	}
-	// массив со всеми возможными ходами, чем выше значение - тем лучше ход
 
 	for (i = 0; i < SIZE * SIZE; i++) {
 		if (m[i] == ' ') {
@@ -155,6 +187,7 @@ int main() {
 	cout << "\nTicTacToe\n";
 	cout << "USER (O)      BOT (X)\n" << endl;
 	cout << "Start? (y/n)" << endl;
+
 	if (!yesOrNo()) {
 		return 0;
 	}
@@ -162,8 +195,6 @@ int main() {
 	for (int i = 0; i < SIZE * SIZE; i++) {
 		m[i] = ' ';
 	}
-
-
 	while (true) {
 		printMap();
 		while (!isFull()) {
@@ -187,7 +218,6 @@ int main() {
 		}
 
 		cout << "\nOne more time? (y/n)" << endl;
-
 
 		if (yesOrNo()) {
 			Clear();
