@@ -1,10 +1,12 @@
 ﻿#include<iostream>
 #include <string>
-
 using namespace std;
 
+#define SIZE  4
+
+
 int botChoice;
-char m[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+char m[SIZE*SIZE] = {};
 
 void Clear() {
 	//функция для очистки терминала
@@ -21,14 +23,40 @@ void printMap() {
 	Clear();
 	//вывод игрового поля в консоль
 	cout << endl;
-	cout << m[0] << "|" << m[1] << "|" << m[2] << endl;
-	cout << "-+-+-" << endl;
-	cout << m[3] << "|" << m[4] << "|" << m[5] << endl;
-	cout << "-+-+-" << endl;
-	cout << m[6] << "|" << m[7] << "|" << m[8] << endl;
+	for (int i = 0; i < SIZE; i++){
+		for (int j = 0;  j < SIZE;  j++){
+			cout << m[j] << "|";
+
+		}
+		cout << endl;
+		for (int k = 0; k < SIZE; k++){
+			cout << "-+";
+		}
+		cout << endl;
+	}
 }
 
-bool checkWin(char c) {
+bool checkWin(char c){
+	for (int i = 0; i < 9; i += 3){
+		if ((m[i] == m[i + 1]) && (m[i + 1] == m[i + 2]) && (m[i] == c)) {
+			return true;
+		}
+	}
+	for (int i = 0; i < 3; i++){
+		if ((m[i] == m[i + 3]) && (m[i + 3] == m[i + 6]) && (m[i] == c))
+			return true;
+	}
+	if ((m[0] == m[4]) && (m[4] == m[8]) && (m[0] == c)){
+		return true;
+	}
+	if ((m[2] == m[4]) && (m[4] == m[6]) && (m[2] == c)){
+		return true;
+	}
+
+	return false;
+}
+
+bool checkWin_old(char c) {
 	if ((m[0] == m[1]) && (c == m[0]) && (m[2] == c)) {
 		return true;
 	}
@@ -82,10 +110,10 @@ void userTurn() {
 	}
 }
 
-int ab(bool flag) // The ab function
-{
+int ab(bool flag){// Логика бота 
 	int max = -20, min = 20;
 	int i, j, value = 1;
+
 	if (checkWin('X')) {
 		return 10;
 	}
@@ -97,6 +125,7 @@ int ab(bool flag) // The ab function
 	}
 
 	int score[9] = { 1, 1, 1, 1, 1, 1, 1, 1, 1};
+	// массив со всеми возможными ходами, чем выше значение - тем лучше ход
 
 	for (i = 0; i < 9; i++) {
 		if (m[i] == ' ') {
@@ -155,6 +184,11 @@ int main() {
 	if (!yesOrNo()) {
 		return 0;
 	}
+
+	for (int i = 0; i < SIZE*SIZE; i++) {
+		m[i] = ' ';
+	}
+
 
 	while (true) {
 		printMap();
