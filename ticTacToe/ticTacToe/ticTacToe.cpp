@@ -106,7 +106,7 @@ void userTurn() {
 		cin >> s;
 		turn = std::stoi(s);
 		cout << endl;
-		if ((turn < SIZE * SIZE) /* & (turn > -1)*/) {
+		if ((turn < SIZE * SIZE) & (turn >= 0)) {
 			if (m[turn] == ' ') {
 				m[turn] = 'O';
 				printMap();
@@ -198,14 +198,63 @@ int main() {
 	for (int i = 0; i < SIZE * SIZE; i++) {
 		m[i] = ' ';
 	}
-	m[0] = 'O';
-	m[1] = 'X';
-	m[4] = 'X';
-	m[5] = 'X';
-	m[2] = 'O';
-	m[8] = 'O';
 
 	while (true) {
+
+		printMap();
+		userTurn();
+		if (m[5] == ' ') {
+			m[5] = 'X';
+		}
+		else {
+			m[6] = 'X';
+		}
+		printMap();
+		userTurn();
+		if (m[9] == ' ') {
+			m[9] = 'X';
+		}
+		else if (m[10] == ' ') {
+			m[10] = 'X';
+		}
+		else {
+			m[6] = 'X';
+		}
+		printMap();
+		userTurn();
+		char c;
+		bool fl1 = false;
+		for (int i = 0; i < SIZE; i++) {
+			c = m[i];
+			m[i] = 'O';
+			if (checkWin('O')) {
+				m[i] = 'X';
+				fl1 = true;
+				break;
+			}
+			m[i] = 'X';
+			if (checkWin('X')) {
+				m[i] = 'X';
+				fl1 = true;
+				break;
+			}
+			m[i] = c;
+		}
+		if (!fl1) {
+			if (m[12] == ' ') {
+				m[12] = 'X';
+			}
+			else if (m[0] == ' ') {
+				m[0] = 'X';
+			}
+			else if (m[15] == ' ') {
+				m[15] = 'X';
+			}
+			else if (m[3] == ' ') {
+				m[3] = 'X';
+			}
+		}
+
 		printMap();
 		while (!isFull()) {
 			userTurn();
