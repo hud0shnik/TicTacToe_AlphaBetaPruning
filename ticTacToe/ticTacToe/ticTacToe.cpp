@@ -2,289 +2,285 @@
 #include <string>
 using namespace std;
 
-#define SIZE  4
-
-
+#define SIZE 4
 int botChoice;
 char m[SIZE * SIZE] = {};
 
 void Clear() {
-	//функция для очистки терминала
+    //функция для очистки терминала
 #if defined _WIN32
-	system("cls");
+    system("cls");
 #elif defined(__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-	system("clear");
+    system("clear");
 #elif defined(__APPLE__)
-	system("clear");
+    system("clear");
 #endif
 }
 
 void printMap() {
-	Clear();
-	//вывод игрового поля в консоль
-	cout << endl;
-	for (int i = 0; i < SIZE; i++) {
-		for (int j = 0; j < SIZE; j++) {
-			cout << m[j + SIZE * i] << "|";
+    Clear();
+    //вывод игрового поля в консоль
+    cout << endl;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            cout << m[j + SIZE * i] << "|";
 
-		}
-		cout << endl;
-		for (int k = 0; k < SIZE; k++) {
-			cout << "-+";
-		}
-		cout << endl;
-	}
+        }
+        cout << endl;
+        for (int k = 0; k < SIZE; k++) {
+            cout << "-+";
+        }
+        cout << endl;
+    }
 }
 
 bool checkWin(char c) {
-	int points = 0;
+    int points = 0;
 
-	for (int i = 0; i < SIZE; i++) {
-		for (int j = 0; j < SIZE; j++) {
-			if (m[j + SIZE * i] == c) {
-				points++;
-				if (points == SIZE) {
-					return true;
-				}
-			}
-		}
-		points = 0;
-	}
-	points = 0;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (m[j + SIZE * i] == c) {
+                points++;
+                if (points == SIZE) {
+                    return true;
+                }
+            }
+        }
+        points = 0;
+    }
+    points = 0;
 
-	for (int j = 0; j < SIZE; j++) {
-		for (int i = 0; i < SIZE; i++) {
-			if (m[j + SIZE * i] == c) {
-				points++;
-				if (points == SIZE) {
-					return true;
-				}
-			}
-		}
-		points = 0;
-	}
-	points = 0;
+    for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            if (m[j + SIZE * i] == c) {
+                points++;
+                if (points == SIZE) {
+                    return true;
+                }
+            }
+        }
+        points = 0;
+    }
+    points = 0;
 
-	for (int i = 0; i <= SIZE; i++) {
-		if (m[i * (SIZE + 1)] == c) {
-			points++;
-			if (points == SIZE) {
-				return true;
-			}
-		}
-	}
-	points = 0;
+    for (int i = 0; i <= SIZE; i++) {
+        if (m[i * (SIZE + 1)] == c) {
+            points++;
+            if (points == SIZE) {
+                return true;
+            }
+        }
+    }
+    points = 0;
 
-	for (int i = 0; i <= SIZE; i++) {
-		if (m[i * (SIZE - 1)] == c) {
-			points++;
-			if (points == SIZE) {
-				return true;
-			}
-		}
-	}
-	
+    for (int i = 0; i <= SIZE; i++) {
+        if (m[i * (SIZE - 1)] == c) {
+            points++;
+            if (points == SIZE) {
+                return true;
+            }
+        }
+    }
 
-
-	return false;
+    return false;
 }
 
 bool isFull() {
-	for (int i = 0; i < SIZE * SIZE; i++) {
-		if (m[i] == ' ') {
-			return false;
-		}
-	}
-	return true;
+    for (int i = 0; i < SIZE * SIZE; i++) {
+        if (m[i] == ' ') {
+            return false;
+        }
+    }
+    return true;
 }
 
 void userTurn() {
-	string s;
-	int turn;
-	while (true) {
-		cout << "Your choice: ";
-		cin >> s;
-		turn = std::stoi(s);
-		cout << endl;
-		if ((turn < SIZE * SIZE) & (turn >= 0)) {
-			if (m[turn] == ' ') {
-				m[turn] = 'O';
-				printMap();
-				break;
-			}
-		}
-		cout << "Wrong input, try again" << endl;
-	}
+    string s;
+    int turn;
+    while (true) {
+        cout << "Your choice: ";
+        cin >> s;
+        turn = std::stoi(s);
+        cout << endl;
+        if ((turn < SIZE * SIZE) & (turn >= 0)) {
+            if (m[turn] == ' ') {
+                m[turn] = 'O';
+                printMap();
+                break;
+            }
+        }
+        cout << "Wrong input, try again" << endl;
+    }
 }
 
-int ab(bool flag) {// Логика бота
-	int max = -20, min = 20;
-	int i, j, value = 1;
-	if (checkWin('X')) {
-		return 10;
-	}
-	if (checkWin('O')) {
-		return -10;
-	}
-	if (isFull()) {
-		return 0;
-	}
-	// массив со всеми возможными ходами, чем выше значение - тем лучше ход
-	int score[SIZE * SIZE] = {};	
+int ab(bool flag) { // Логика бота
+    int max = -20, min = 20;
+    int i, j, value = 1;
+    if (checkWin('X')) {
+        return 10;
+    }
+    if (checkWin('O')) {
+        return -10;
+    }
+    if (isFull()) {
+        return 0;
+    }
+    // массив со всеми возможными ходами, чем выше значение - тем лучше ход
+    int score[SIZE * SIZE] = {};
 
-	for (int k = 0; k < SIZE * SIZE; k++) {
-		score[k] = 1;
-	}
+    for (int k = 0; k < SIZE * SIZE; k++) {
+        score[k] = 1;
+    }
 
-	for (i = 0; i < SIZE * SIZE; i++) {
-		if (m[i] == ' ') {
-			if (min > max) {
-				if (flag == true) {
-					m[i] = 'X';
-					value = ab(false);
-				}
-				else {
-					m[i] = 'O';
-					value = ab(true);
-				}
-				m[i] = ' ';
-				score[i] = value;
-			}
-		}
-	}
+    for (i = 0; i < SIZE * SIZE; i++) {
+        if (m[i] == ' ') {
+            if (min > max) {
+                if (flag == true) {
+                    m[i] = 'X';
+                    value = ab(false);
+                }
+                else {
+                    m[i] = 'O';
+                    value = ab(true);
+                }
+                m[i] = ' ';
+                score[i] = value;
+            }
+        }
+    }
 
-	if (flag) {
-		max = -20;
-		for (j = 0; j < SIZE * SIZE; j++) {
-			if (score[j] > max && score[j] != 1) {
-				max = score[j];
-				botChoice = j;
-			}
-		}
-		return max;
-	}
-	if (!flag) {
-		min = 20;
-		for (j = 0; j < SIZE * SIZE; j++) {
-			if (score[j] < min && score[j] != 1) {
-				min = score[j];
-				botChoice = j;
-			}
-		}
-		return min;
-	}
+    if (flag) {
+        max = -20;
+        for (j = 0; j < SIZE * SIZE; j++) {
+            if (score[j] > max && score[j] != 1) {
+                max = score[j];
+                botChoice = j;
+            }
+        }
+        return max;
+    }
+    if (!flag) {
+        min = 20;
+        for (j = 0; j < SIZE * SIZE; j++) {
+            if (score[j] < min && score[j] != 1) {
+                min = score[j];
+                botChoice = j;
+            }
+        }
+        return min;
+    }
 }
 
 bool yesOrNo() {
-	string answ;
-	cin >> answ;
+    string answ;
+    cin >> answ;
 
-	if (answ == "y" || answ == "yes") {
-		return 1;
-	}
-	return 0;
+    if (answ == "y" || answ == "yes") {
+        return 1;
+    }
+    return 0;
 
 }
 
 int main() {
-	cout << "\nTicTacToe\n";
-	cout << "USER (O)      BOT (X)\n" << endl;
-	cout << "Start? (y/n)" << endl;
+    cout << "\nTicTacToe\n";
+    cout << "USER (O)      BOT (X)\n" << endl;
+    cout << "Start? (y/n)" << endl;
 
-	if (!yesOrNo()) {
-		return 0;
-	}
+    if (!yesOrNo()) {
+        return 0;
+    }
 
-	for (int i = 0; i < SIZE * SIZE; i++) {
-		m[i] = ' ';
-	}
+    for (int i = 0; i < SIZE * SIZE; i++) {
+        m[i] = ' ';
+    }
 
-	while (true) {
+    while (true) {
 
-		printMap();
-		userTurn();
-		if (m[5] == ' ') {
-			m[5] = 'X';
-		}
-		else {
-			m[6] = 'X';
-		}
-		printMap();
-		userTurn();
-		if (m[9] == ' ') {
-			m[9] = 'X';
-		}
-		else if (m[10] == ' ') {
-			m[10] = 'X';
-		}
-		else {
-			m[6] = 'X';
-		}
-		printMap();
-		userTurn();
-		char c;
-		bool fl1 = false;
-		for (int i = 0; i < SIZE; i++) {
-			c = m[i];
-			m[i] = 'O';
-			if (checkWin('O')) {
-				m[i] = 'X';
-				fl1 = true;
-				break;
-			}
-			m[i] = 'X';
-			if (checkWin('X')) {
-				m[i] = 'X';
-				fl1 = true;
-				break;
-			}
-			m[i] = c;
-		}
-		if (!fl1) {
-			if (m[12] == ' ') {
-				m[12] = 'X';
-			}
-			else if (m[0] == ' ') {
-				m[0] = 'X';
-			}
-			else if (m[15] == ' ') {
-				m[15] = 'X';
-			}
-			else if (m[3] == ' ') {
-				m[3] = 'X';
-			}
-		}
+        printMap();
+        userTurn();
+        if (m[5] == ' ') {
+            m[5] = 'X';
+        }
+        else {
+            m[6] = 'X';
+        }
+        printMap();
+        userTurn();
+        if (m[9] == ' ') {
+            m[9] = 'X';
+        }
+        else if (m[10] == ' ') {
+            m[10] = 'X';
+        }
+        else {
+            m[6] = 'X';
+        }
+        printMap();
+        userTurn();
+        char c;
+        bool fl1 = false;
+        for (int i = 0; i < SIZE; i++) {
+            c = m[i];
+            m[i] = 'O';
+            if (checkWin('O')) {
+                m[i] = 'X';
+                fl1 = true;
+                break;
+            }
+            m[i] = 'X';
+            if (checkWin('X')) {
+                m[i] = 'X';
+                fl1 = true;
+                break;
+            }
+            m[i] = c;
+        }
+        if (!fl1) {
+            if (m[12] == ' ') {
+                m[12] = 'X';
+            }
+            else if (m[0] == ' ') {
+                m[0] = 'X';
+            }
+            else if (m[15] == ' ') {
+                m[15] = 'X';
+            }
+            else if (m[3] == ' ') {
+                m[3] = 'X';
+            }
+        }
 
-		printMap();
-		while (!isFull()) {
-			userTurn();
-			if (checkWin('O')) {
-				cout << "You Won!!! Impossible!!!" << endl;
-				break;
-			}
-			ab(true);
-			m[botChoice] = 'X';
-			printMap();
-			if (checkWin('X')) {
-				printMap();
-				cout << "Bot Won" << endl;
-				break;
-			}
-			if (isFull()) {
-				cout << "Draw!" << endl;
-				break;
-			}
-		}
+        printMap();
+        while (!isFull()) {
+            userTurn();
+            if (checkWin('O')) {
+                cout << "You Won!!! Impossible!!!" << endl;
+                break;
+            }
+            ab(true);
+            m[botChoice] = 'X';
+            printMap();
+            if (checkWin('X')) {
+                printMap();
+                cout << "Bot Won" << endl;
+                break;
+            }
+            if (isFull()) {
+                cout << "Draw!" << endl;
+                break;
+            }
+        }
 
-		cout << "\nOne more time? (y/n)" << endl;
+        cout << "\nOne more time? (y/n)" << endl;
 
-		if (yesOrNo()) {
-			Clear();
-			for (int i = 0; i < SIZE * SIZE; i++)
-				m[i] = ' ';
-			continue;
-		}
+        if (yesOrNo()) {
+            Clear();
+            for (int i = 0; i < SIZE * SIZE; i++)
+                m[i] = ' ';
+            continue;
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 }
