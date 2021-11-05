@@ -50,6 +50,7 @@ bool checkWin(char c) {
 		}
 		points = 0;
 	}
+	points = 0;
 
 	for (int j = 0; j < SIZE; j++) {
 		for (int i = 0; i < SIZE; i++) {
@@ -62,6 +63,7 @@ bool checkWin(char c) {
 		}
 		points = 0;
 	}
+	points = 0;
 
 	for (int i = 0; i <= SIZE; i++) {
 		if (m[i * (SIZE + 1)] == c) {
@@ -128,9 +130,10 @@ int ab(bool flag) {// Логика бота
 		return 0;
 	}
 	// массив со всеми возможными ходами, чем выше значение - тем лучше ход
-	int score[SIZE * SIZE] = {};		
-	for (int i = 0; i < SIZE * SIZE; i++) {
-		score[i] = 1;
+	int score[SIZE * SIZE] = {};	
+
+	for (int k = 0; k < SIZE * SIZE; k++) {
+		score[k] = 1;
 	}
 
 	for (i = 0; i < SIZE * SIZE; i++) {
@@ -195,6 +198,13 @@ int main() {
 	for (int i = 0; i < SIZE * SIZE; i++) {
 		m[i] = ' ';
 	}
+	m[0] = 'O';
+	m[1] = 'X';
+	m[4] = 'X';
+	m[5] = 'X';
+	m[2] = 'O';
+	m[8] = 'O';
+
 	while (true) {
 		printMap();
 		while (!isFull()) {
