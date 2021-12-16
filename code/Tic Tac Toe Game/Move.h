@@ -1,11 +1,7 @@
 #pragma once
-
 #include <vector>
-
 #include <algorithm>
-
 #include <random>
-
 using namespace std;
 
 struct Vector2 {

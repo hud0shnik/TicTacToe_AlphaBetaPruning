@@ -1,9 +1,6 @@
 #pragma once
-
 #include "InputSystem.h"
-
 #include "ViewPort.h"
-
 #include "AI.h"
 
 enum class Queue {
