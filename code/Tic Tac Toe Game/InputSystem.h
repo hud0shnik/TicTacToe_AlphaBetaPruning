@@ -1,0 +1,16 @@
+#pragma once
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Система ввода пользовательских данных
+class InputSystem
+{
+	// Методы класса
+public:
+	void InputPosition(int& x, int& y);
+	void Settings(int& x_gridSize, int& y_gridSize, int& countToWin);
+	void InputAction(int& act);
+};
+
