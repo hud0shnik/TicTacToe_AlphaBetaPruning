@@ -1,299 +1,279 @@
 #include "AI.h"
 
-Vector2 AI::GetMove()
-{
-	// Формируем доступыне ходы
-	vector<Move> moves;
-	vector<Vector2> points;
-	points = GetEmptyCells();
+Vector2 AI::GetMove() {
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+  vector < Move > moves;
+  vector < Vector2 > points;
+  points = GetEmptyCells();
 
-	// Перемешиваем все возможные варианты ходов
-	auto rng = std::default_random_engine{};
-	std::shuffle(std::begin(points), std::end(points), rng);
-	std::random_shuffle(points.begin(), points.end());
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+  auto rng = std::default_random_engine {};
+  std::shuffle(std::begin(points), std::end(points), rng);
+  std::random_shuffle(points.begin(), points.end());
 
-	// Имитируем ходы 
-	for (Vector2 p : points) {
-		moves.push_back(SimulationMove(p));
-	}
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 
+  for (Vector2 p: points) {
+    moves.push_back(SimulationMove(p));
+  }
 
-	// Выбираем науличший
-	bool found = false; 
-	Move move;
-	for (int i = 0; i < moves.size(); i++) {
-		if (moves[i].estimation > 0) {
-			move = moves[i];
-			found = true;
-			break;
-		}
-	}
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  bool found = false;
+  Move move;
+  for (int i = 0; i < moves.size(); i++) {
+    if (moves[i].estimation > 0) {
+      move = moves[i];
+      found = true;
+      break;
+    }
+  }
 
-	// Если наилучший есть
-	if (found) {
-		return move.p;
-	}
-	else {
-		// Иначе любой пустой
-		if (points.size() != 0)
-			return GetEmptyCell();
-		return Vector2(-1, -1);
-	}	
+  // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+  if (found) {
+    return move.p;
+  } else {
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    if (points.size() != 0)
+      return GetEmptyCell();
+    return Vector2(-1, -1);
+  }
 }
 
-bool AI::IsEmptyCell(Vector2 p)
-{
-	if(map[p.x][p.y] != '_')
-		return false;
+bool AI::IsEmptyCell(Vector2 p) {
+  if (map[p.x][p.y] != '_')
+    return false;
 
-	return true;
+  return true;
 }
 
-Vector2 AI::GetEmptyCell()
-{
-	for (int i = 0; i < size.x; i++)
-		for (int j = 0; j < size.y; j++)
-			if (map[i][j] == '_')
-				return  Vector2(i, j);
+Vector2 AI::GetEmptyCell() {
+  for (int i = 0; i < size.x; i++)
+    for (int j = 0; j < size.y; j++)
+      if (map[i][j] == '_')
+        return Vector2(i, j);
 
-	return Vector2(-1, -1);
+  return Vector2(-1, -1);
 }
 
-vector<Vector2> AI::GetEmptyCells()
-{
-	vector<Vector2> points;
-	Vector2 point;
+vector < Vector2 > AI::GetEmptyCells() {
+  vector < Vector2 > points;
+  Vector2 point;
 
-	for (int i = 0; i < size.x; i++)
-		for (int j = 0; j < size.y; j++)
-			if (map[i][j] == '_') {
-				point.x = i;
-				point.y = j;
-				points.push_back(point);
-			}
+  for (int i = 0; i < size.x; i++)
+    for (int j = 0; j < size.y; j++)
+      if (map[i][j] == '_') {
+        point.x = i;
+        point.y = j;
+        points.push_back(point);
+      }
 
-	return points;
+  return points;
 }
 
-void AI::Init(char** _map, Vector2 _size)
-{
-	size.x = _size.x;
-	size.y = _size.y;
+void AI::Init(char ** _map, Vector2 _size) {
+  size.x = _size.x;
+  size.y = _size.y;
 
-	map = new char* [size.x];
-	for (int i = 0; i < size.x; i++)
-		map[i] = new char[size.y];
+  map = new char * [size.x];
+  for (int i = 0; i < size.x; i++)
+    map[i] = new char[size.y];
 
-	for (int i = 0; i < size.x; i++)
-		for (int j = 0; j < size.y; j++)
-			map[i][j] = _map[i][j];
+  for (int i = 0; i < size.x; i++)
+    for (int j = 0; j < size.y; j++)
+      map[i][j] = _map[i][j];
 }
 
-Move AI::SimulationMove(Vector2 p)
-{
-	// Симуляция хода, для оценки хода
-	map[p.x][p.y] = '0';
-	Move m(p);
+Move AI::SimulationMove(Vector2 p) {
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+  map[p.x][p.y] = '0';
+  Move m(p);
 
-	// Если побеждает ИИ -> 1
-	if(CheckWinner())
-		m.estimation = 1;
-	else // иначе -> 0
-		m.estimation = 0;
+  // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ -> 1
+  if (CheckWinner())
+    m.estimation = 1;
+  else // пїЅпїЅпїЅпїЅпїЅ -> 0
+    m.estimation = 0;
 
-	// Убираем ход
-	map[p.x][p.y] = '_';
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+  map[p.x][p.y] = '_';
 
-	return m;
+  return m;
 }
 
-bool AI::CheckWinner()
-{
-	vector<char> list;
-	int stateIA = 0;
-	int statePL = 0;
+bool AI::CheckWinner() {
+  vector < char > list;
+  int stateIA = 0;
+  int statePL = 0;
 
-	//1. Проверить все горизонтали (строки)
-	for (int i = 0; i < size.x; i++) {
-		for (int j = 0; j < size.y; j++) {
-			list.push_back(map[i][j]);
-		}
+  //1. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ)
+  for (int i = 0; i < size.x; i++) {
+    for (int j = 0; j < size.y; j++) {
+      list.push_back(map[i][j]);
+    }
 
-		// Оценка шансов на победу ИИ
-		if (CkeckList(list)) {
-			stateIA++;
-		}
-		else {
-			statePL++;
-		}
+    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
+    if (CkeckList(list)) {
+      stateIA++;
+    } else {
+      statePL++;
+    }
 
-		list.clear();
-	}
+    list.clear();
+  }
 
-	//2. Проверить все вертикали (столбцы)
-	for (int i = 0; i < size.x; i++) {
-		for (int j = 0; j < size.y; j++) {
-			list.push_back(map[j][i]);
-		}
+  //2. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+  for (int i = 0; i < size.x; i++) {
+    for (int j = 0; j < size.y; j++) {
+      list.push_back(map[j][i]);
+    }
 
-		if (CkeckList(list)) {
-			stateIA++;
-		}
-		else {
-			statePL++;
-		}
+    if (CkeckList(list)) {
+      stateIA++;
+    } else {
+      statePL++;
+    }
 
-		list.clear();
-	}
+    list.clear();
+  }
 
-	//3. Проверяем все левые диагонали
-	// Главная диагональ и над ней
-	for (int i = 0; i < size.x; ++i) {
-		for (int j = 0; i + j < size.y; ++j) {
-			list.push_back(map[i + j][j]);
-		}
+  //3. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ
+  for (int i = 0; i < size.x; ++i) {
+    for (int j = 0; i + j < size.y; ++j) {
+      list.push_back(map[i + j][j]);
+    }
 
-		if (CkeckList(list)) {
-			stateIA++;
-		}
-		else {
-			statePL++;
-		}
+    if (CkeckList(list)) {
+      stateIA++;
+    } else {
+      statePL++;
+    }
 
-		list.clear();
-	}
+    list.clear();
+  }
 
-	// Под главной диагональю
-	for (int i = 1; i < size.x; ++i) {
-		for (int j = 0; i + j < size.y; ++j) {
-			list.push_back(map[i + j][j]);
-		}
+  // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  for (int i = 1; i < size.x; ++i) {
+    for (int j = 0; i + j < size.y; ++j) {
+      list.push_back(map[i + j][j]);
+    }
 
-		if (CkeckList(list)) {
-			stateIA++;
-		}
-		else {
-			statePL++;
-		}
+    if (CkeckList(list)) {
+      stateIA++;
+    } else {
+      statePL++;
+    }
 
-		list.clear();
-	}
+    list.clear();
+  }
 
-	//4. Проверяем все правые диагонали
-	// Побочная диагональ и над ней
-	for (int j = size.y; j > 0; --j) {
-		for (int i = 0; i < size.x; ++i) {
-			if (size.x - j - i >= 0) {
-				list.push_back(map[i][size.x - j - i]);
-			}
-		}
+  //4. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ
+  for (int j = size.y; j > 0; --j) {
+    for (int i = 0; i < size.x; ++i) {
+      if (size.x - j - i >= 0) {
+        list.push_back(map[i][size.x - j - i]);
+      }
+    }
 
-		if (CkeckList(list)) {
-			stateIA++;
-		}
-		else {
-			statePL++;
-		}
+    if (CkeckList(list)) {
+      stateIA++;
+    } else {
+      statePL++;
+    }
 
-		list.clear();
-	}
+    list.clear();
+  }
 
-	// Под побочной диагональю
-	for (int j = 0; j < size.y; ++j) {
-		for (int i = 0; i < size.x; ++i) {
-			if (size.x + j - i < size.x) {
-				if (size.x - j - i >= 0) {
-					list.push_back(map[i][size.x + j - i]);
-				}
-			}
-		}
+  // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  for (int j = 0; j < size.y; ++j) {
+    for (int i = 0; i < size.x; ++i) {
+      if (size.x + j - i < size.x) {
+        if (size.x - j - i >= 0) {
+          list.push_back(map[i][size.x + j - i]);
+        }
+      }
+    }
 
-		if (CkeckList(list)) {
-			stateIA++;
-		}
-		else {
-			statePL++;
-		}
+    if (CkeckList(list)) {
+      stateIA++;
+    } else {
+      statePL++;
+    }
 
-		list.clear();
-	}
+    list.clear();
+  }
 
-	// Вывод предварительной оценки ходов
-	if (stateIA > statePL)
-		return true;
-	else
-		return false;
+  // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+  if (stateIA > statePL)
+    return true;
+  else
+    return false;
 }
 
-bool AI::CkeckList(vector<char> list)
-{
-	// Проверка относительно того, кто больше наберет, 
-	// а не относительно нужного количества для победы
+bool AI::CkeckList(vector < char > list) {
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 
+  // пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
-	int countPl = 0;
-	int countAI = 0;
+  int countPl = 0;
+  int countAI = 0;
 
-	if (list.size() == 0)
-		return false;
+  if (list.size() == 0)
+    return false;
 
-	for (int i = 0; i < list.size(); i++) {
-		if (list[i] == 'X') {
-			countPl++;
+  for (int i = 0; i < list.size(); i++) {
+    if (list[i] == 'X') {
+      countPl++;
 
-			if (i < list.size() - 1) {
-				if (list[i + 1] != 'X') {
-					countPl = 0;
-				}
-				else {
-					if (i == list.size() - 1) {
-						countPl++;
-					}
-				}
-			}
-		}
+      if (i < list.size() - 1) {
+        if (list[i + 1] != 'X') {
+          countPl = 0;
+        } else {
+          if (i == list.size() - 1) {
+            countPl++;
+          }
+        }
+      }
+    }
 
-		if (list[i] == '0') {
-			countAI++;
+    if (list[i] == '0') {
+      countAI++;
 
-			if (i < list.size() - 1) {
-				if (list[i + 1] != '0') {
-					countAI = 0;
-				}
-				else {
-					if (i == list.size() - 1) {
-						countAI++;
-					}
-				}
-			}
-		}
-	}
+      if (i < list.size() - 1) {
+        if (list[i + 1] != '0') {
+          countAI = 0;
+        } else {
+          if (i == list.size() - 1) {
+            countAI++;
+          }
+        }
+      }
+    }
+  }
 
-	return countAI >= countPl;
+  return countAI >= countPl;
 }
 
-AI::AI()
-{
-	map = new char* [0];
-	size.x = 0;
-	size.y = 0;
+AI::AI() {
+  map = new char * [0];
+  size.x = 0;
+  size.y = 0;
 }
 
-AI::~AI()
-{
-	for (int i = 0; i < size.x; i++)
-		delete[] map[i];
+AI::~AI() {
+  for (int i = 0; i < size.x; i++)
+    delete[] map[i];
 
-	delete[] map;
+  delete[] map;
 }
 
-Vector2 AI::GetBestMove(char** _map, Vector2 _size)
-{
-	Init(_map, _size);
+Vector2 AI::GetBestMove(char ** _map, Vector2 _size) {
+  Init(_map, _size);
 
-	// Ищем свободные ячейки
-	if (GetEmptyCells().size() == 0) {
-		return Vector2(-1, -1); // нет свободных
-	}
+  // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+  if (GetEmptyCells().size() == 0) {
+    return Vector2(-1, -1); // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  }
 
-	// Ищем лучший ход среди доступных
-	return GetMove();
+  // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+  return GetMove();
 }

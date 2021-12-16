@@ -1,64 +1,62 @@
 #pragma once
 
 #include "InputSystem.h"
+
 #include "ViewPort.h"
+
 #include "AI.h"
 
-enum class Queue
-{
-	player,
-	AI
+enum class Queue {
+  player,
+  AI
 };
 
-enum class GameState
-{
-	inGame,
-	start,
-	end,
-	playerWon,
-	AIWom,
-	exit
+enum class GameState {
+  inGame,
+  start,
+  end,
+  playerWon,
+  AIWom,
+  exit
 };
 
-// Игра
-class Game
-{
-	// Поля класса
-private:
-	Vector2 gridSize;
-	char** gameGrid;
-	int countToWin;
-	Queue queue;
-	GameState state;
-	
-	char AIMarker;
-	AI ai;
+// пїЅпїЅпїЅпїЅ
+class Game {
+  // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+  private:
+    Vector2 gridSize;
+  char ** gameGrid;
+  int countToWin;
+  Queue queue;
+  GameState state;
 
-	char playerMarker;
-	Vector2 movePos;
+  char AIMarker;
+  AI ai;
 
-	InputSystem input;
-	ViewPort view;
+  char playerMarker;
+  Vector2 movePos;
 
-	bool fisrtLounch;
+  InputSystem input;
+  ViewPort view;
 
-	// Методы класса
-	void NewGame();
-	void GameEnd();
-	void InitGameGrid(Vector2 size);
-	void DefineQueue();
-	void ClearGameGrid();
-	bool CkeckList(vector<char> list);
-	void CheckingGame();
-	void NextStep();
-	bool MakeMove(Vector2 pos, char marker);
-	bool IsCellEmpty(Vector2 pos);
-	void AI_SelectPosition();
+  bool fisrtLounch;
 
-public:
-	Game();
-	~Game();
+  // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+  void NewGame();
+  void GameEnd();
+  void InitGameGrid(Vector2 size);
+  void DefineQueue();
+  void ClearGameGrid();
+  bool CkeckList(vector < char > list);
+  void CheckingGame();
+  void NextStep();
+  bool MakeMove(Vector2 pos, char marker);
+  bool IsCellEmpty(Vector2 pos);
+  void AI_SelectPosition();
 
-	void Logic();
+  public:
+    Game();
+  ~Game();
+
+  void Logic();
 };
-

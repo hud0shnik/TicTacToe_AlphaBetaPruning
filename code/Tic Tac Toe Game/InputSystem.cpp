@@ -1,30 +1,27 @@
 #include "InputSystem.h"
 
-void InputSystem::InputPosition(int& x, int& y)
-{
-	cout << "Введите позицию хода (x, y): ";
-	cin >> x >> y;
+void InputSystem::InputPosition(int & x, int & y) {
+  cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (x, y): ";
+  cin >> x >> y;
 
-	// Так как ввод от 1
-	x--;
-	y--;
+  // пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ 1
+  x--;
+  y--;
 
-	system("cls");
+  system("cls");
 }
 
-void InputSystem::Settings(int& x_gridSize, int& y_gridSize, int& countToWin)
-{
-	cout << "Введите размер игрового поля (x, y): ";
-	cin >> x_gridSize >> y_gridSize;
-	cout << "Введите размер для победы: ";
-	cin >> countToWin;
+void InputSystem::Settings(int & x_gridSize, int & y_gridSize, int & countToWin) {
+  cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (x, y): ";
+  cin >> x_gridSize >> y_gridSize;
+  cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: ";
+  cin >> countToWin;
 
-	system("cls");
+  system("cls");
 }
 
-void InputSystem::InputAction(int& act)
-{
-	cout << "Ваш выбор: ";
-	cin >> act;
-	system("cls");
+void InputSystem::InputAction(int & act) {
+  cout << "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ: ";
+  cin >> act;
+  system("cls");
 }
