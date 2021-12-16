@@ -1,14 +1,11 @@
 #pragma once
 #include "Move.h"
-
-// ����� ��� ��
-class AI {
-  // ���� ������
+ 
+class AI { 
   private:
     char ** map;
   Vector2 size;
-
-  // ������ ������
+   
   Vector2 GetMove();
   bool IsEmptyCell(Vector2 p);
   Vector2 GetEmptyCell();

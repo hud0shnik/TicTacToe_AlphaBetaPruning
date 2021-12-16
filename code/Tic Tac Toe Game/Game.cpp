@@ -282,7 +282,7 @@ void Game::Logic() {
           done = IsCellEmpty(movePos); 
 
           if (!done) {
-            cout << "�������� ����!\n���������� �����!" << endl;
+            cout << "Wrong input..." << endl;
             system("pause");
             system("cls");
           }

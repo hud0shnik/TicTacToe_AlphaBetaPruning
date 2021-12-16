@@ -1,16 +1,16 @@
 #include "ViewPort.h"
 
 void ViewPort::WinnerPrint(int mode) {
-  cout << "����� ����!" << endl;
+  cout << "Game over" << endl;
   if (mode == 1) {
-    cout << "�������: �����!" << endl;
+    cout << "You win!!!" << endl;
   } else if (mode == 2) {
-    cout << "�������: ���������!" << endl;
+    cout << "You lose..." << endl;
   }
 }
 
 void ViewPort::PrintGame(char ** grid, int x, int y) {
-  cout << "    === ������� ���� === " << endl;
+  cout << "    === TicTacToe === " << endl;
 
   cout << " ";
   for (int i = 0; i < x; i++) {
@@ -26,13 +26,13 @@ void ViewPort::PrintGame(char ** grid, int x, int y) {
     cout << endl;
   }
 
-  cout << "========================================================================================" << endl;
-  cout << "�������� �����������: _ - ������ �����, X - ����� ���� ������, 0 - ����� ���� ����������" << endl;
-  cout << "========================================================================================" << endl;
+  cout << "===================================" << endl;
+  cout << "_ - empty cell, X - Player, 0 - Bot" << endl;
+  cout << "===================================" << endl;
 }
 
 void ViewPort::MenuEndGamase() {
-  cout << "�������� ��������: " << endl <<
-    "(0) ��������� ����" << endl <<
-    "(1) ������������� ����" << endl;
+  cout << "Chose: " << endl <<
+    "(0) Exit" << endl <<
+    "(1) One more time" << endl;
 }

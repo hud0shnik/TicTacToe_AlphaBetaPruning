@@ -1,7 +1,7 @@
 #include "InputSystem.h"
 
 void InputSystem::InputPosition(int & x, int & y) {
-  cout << "������� ������� ���� (x, y): ";
+  cout << "Your turn (x, y): ";
   cin >> x >> y;
 
   x--;
@@ -11,16 +11,16 @@ void InputSystem::InputPosition(int & x, int & y) {
 }
 
 void InputSystem::Settings(int & x_gridSize, int & y_gridSize, int & countToWin) {
-  cout << "������� ������ �������� ���� (x, y): ";
+  cout << "Game size (x, y): ";
   cin >> x_gridSize >> y_gridSize;
-  cout << "������� ������ ��� ������: ";
+  cout << "Win size: ";
   cin >> countToWin;
 
   system("cls");
 }
 
 void InputSystem::InputAction(int & act) {
-  cout << "��� �����: ";
+  cout << "Your choise: ";
   cin >> act;
   system("cls");
 }
