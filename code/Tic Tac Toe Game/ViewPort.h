@@ -5,10 +5,8 @@
 #include <string>
 
 using namespace std;
-
-// ���� ����������� ��������� ����
-class ViewPort {
-  // ������ ������
+ 
+class ViewPort { 
   public:
     void WinnerPrint(int mode);
   void PrintGame(char ** grid, int x, int y);

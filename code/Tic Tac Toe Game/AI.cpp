@@ -1,22 +1,18 @@
 #include "AI.h"
 
-Vector2 AI::GetMove() {
-  // ��������� ��������� ����
+Vector2 AI::GetMove() { 
   vector < Move > moves;
   vector < Vector2 > points;
   points = GetEmptyCells();
-
-  // ������������ ��� ��������� �������� �����
+   
   auto rng = std::default_random_engine {};
   std::shuffle(std::begin(points), std::end(points), rng);
   std::random_shuffle(points.begin(), points.end());
-
-  // ��������� ���� 
+   
   for (Vector2 p: points) {
     moves.push_back(SimulationMove(p));
   }
-
-  // �������� ���������
+   
   bool found = false;
   Move move;
   for (int i = 0; i < moves.size(); i++) {
@@ -26,12 +22,10 @@ Vector2 AI::GetMove() {
       break;
     }
   }
-
-  // ���� ��������� ����
+   
   if (found) {
     return move.p;
-  } else {
-    // ����� ����� ������
+  } else { 
     if (points.size() != 0)
       return GetEmptyCell();
     return Vector2(-1, -1);
@@ -82,18 +76,15 @@ void AI::Init(char ** _map, Vector2 _size) {
       map[i][j] = _map[i][j];
 }
 
-Move AI::SimulationMove(Vector2 p) {
-  // ��������� ����, ��� ������ ����
+Move AI::SimulationMove(Vector2 p) { 
   map[p.x][p.y] = '0';
   Move m(p);
-
-  // ���� ��������� �� -> 1
+   
   if (CheckWinner())
     m.estimation = 1;
-  else // ����� -> 0
+  else  
     m.estimation = 0;
-
-  // ������� ���
+   
   map[p.x][p.y] = '_';
 
   return m;
@@ -103,14 +94,12 @@ bool AI::CheckWinner() {
   vector < char > list;
   int stateIA = 0;
   int statePL = 0;
-
-  //1. ��������� ��� ����������� (������)
+   
   for (int i = 0; i < size.x; i++) {
     for (int j = 0; j < size.y; j++) {
       list.push_back(map[i][j]);
     }
-
-    // ������ ������ �� ������ ��
+     
     if (CkeckList(list)) {
       stateIA++;
     } else {
@@ -119,8 +108,7 @@ bool AI::CheckWinner() {
 
     list.clear();
   }
-
-  //2. ��������� ��� ��������� (�������)
+   
   for (int i = 0; i < size.x; i++) {
     for (int j = 0; j < size.y; j++) {
       list.push_back(map[j][i]);
@@ -134,9 +122,7 @@ bool AI::CheckWinner() {
 
     list.clear();
   }
-
-  //3. ��������� ��� ����� ���������
-  // ������� ��������� � ��� ���
+   
   for (int i = 0; i < size.x; ++i) {
     for (int j = 0; i + j < size.y; ++j) {
       list.push_back(map[i + j][j]);
@@ -150,8 +136,7 @@ bool AI::CheckWinner() {
 
     list.clear();
   }
-
-  // ��� ������� ����������
+   
   for (int i = 1; i < size.x; ++i) {
     for (int j = 0; i + j < size.y; ++j) {
       list.push_back(map[i + j][j]);
@@ -165,9 +150,7 @@ bool AI::CheckWinner() {
 
     list.clear();
   }
-
-  //4. ��������� ��� ������ ���������
-  // �������� ��������� � ��� ���
+   
   for (int j = size.y; j > 0; --j) {
     for (int i = 0; i < size.x; ++i) {
       if (size.x - j - i >= 0) {
@@ -183,8 +166,7 @@ bool AI::CheckWinner() {
 
     list.clear();
   }
-
-  // ��� �������� ����������
+   
   for (int j = 0; j < size.y; ++j) {
     for (int i = 0; i < size.x; ++i) {
       if (size.x + j - i < size.x) {
@@ -202,17 +184,14 @@ bool AI::CheckWinner() {
 
     list.clear();
   }
-
-  // ����� ��������������� ������ �����
+   
   if (stateIA > statePL)
     return true;
   else
     return false;
 }
 
-bool AI::CkeckList(vector < char > list) {
-  // �������� ������������ ����, ��� ������ �������, 
-  // � �� ������������ ������� ���������� ��� ������
+bool AI::CkeckList(vector < char > list) { 
 
   int countPl = 0;
   int countAI = 0;
@@ -268,12 +247,10 @@ AI::~AI() {
 
 Vector2 AI::GetBestMove(char ** _map, Vector2 _size) {
   Init(_map, _size);
-
-  // ���� ��������� ������
+   
   if (GetEmptyCells().size() == 0) {
-    return Vector2(-1, -1); // ��� ���������
+    return Vector2(-1, -1);  
   }
-
-  // ���� ������ ��� ����� ���������
+   
   return GetMove();
 }

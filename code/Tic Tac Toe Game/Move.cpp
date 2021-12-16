@@ -16,7 +16,7 @@ Move::Move() {
 
 int Move::CompareTo(Move other) {
   auto res = CompareTo(other);
-  if (res == 0 && p.x == 1 && p.y == 1) return 1; // ���� ������������ ���� � �����
+  if (res == 0 && p.x == 1 && p.y == 1) return 1; 
   return res;
 }
 

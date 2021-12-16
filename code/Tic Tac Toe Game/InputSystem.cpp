@@ -4,7 +4,6 @@ void InputSystem::InputPosition(int & x, int & y) {
   cout << "������� ������� ���� (x, y): ";
   cin >> x >> y;
 
-  // ��� ��� ���� �� 1
   x--;
   y--;
 

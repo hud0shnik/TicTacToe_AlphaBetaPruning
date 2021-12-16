@@ -24,8 +24,8 @@ class Move {
     Move(Vector2 _p);
   Move();
 
-  Vector2 p; // ����������
-  float estimation; // ������ ����
+  Vector2 p;  
+  float estimation;  
 
   int CompareTo(Move other);
 };

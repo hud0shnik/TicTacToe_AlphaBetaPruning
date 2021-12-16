@@ -19,10 +19,8 @@ enum class GameState {
   AIWom,
   exit
 };
-
-// ����
-class Game {
-  // ���� ������
+ 
+class Game { 
   private:
     Vector2 gridSize;
   char ** gameGrid;
@@ -40,8 +38,7 @@ class Game {
   ViewPort view;
 
   bool fisrtLounch;
-
-  // ������ ������
+   
   void NewGame();
   void GameEnd();
   void InitGameGrid(Vector2 size);

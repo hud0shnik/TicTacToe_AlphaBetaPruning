@@ -119,7 +119,6 @@ bool Game::CkeckList(vector < char > list) {
 void Game::CheckingGame() {
   vector < char > list;
 
-  //1. ��������� ��� ����������� (������)
   for (int i = 0; i < gridSize.x; i++) {
     for (int j = 0; j < gridSize.y; j++) {
       list.push_back(gameGrid[i][j]);
@@ -132,7 +131,6 @@ void Game::CheckingGame() {
     }
   }
 
-  //2. ��������� ��� ��������� (�������)
   for (int i = 0; i < gridSize.x; i++) {
     for (int j = 0; j < gridSize.y; j++) {
       list.push_back(gameGrid[j][i]);
@@ -145,8 +143,7 @@ void Game::CheckingGame() {
     }
   }
 
-  //3. ��������� ��� ����� ���������
-  // ������� ��������� � ��� ���
+
   for (int i = 0; i < gridSize.x; ++i) {
     for (int j = 0; i + j < gridSize.y; ++j) {
       list.push_back(gameGrid[i + j][j]);
@@ -159,7 +156,6 @@ void Game::CheckingGame() {
     }
   }
 
-  // ��� ������� ����������
   for (int i = 1; i < gridSize.x; ++i) {
     for (int j = 0; i + j < gridSize.y; ++j) {
       list.push_back(gameGrid[i + j][j]);
@@ -172,8 +168,6 @@ void Game::CheckingGame() {
     }
   }
 
-  //4. ��������� ��� ������ ���������
-  // �������� ��������� � ��� ���
   for (int j = gridSize.y; j > 0; --j) {
     for (int i = 0; i < gridSize.x; ++i) {
       if (gridSize.x - j - i >= 0) {
@@ -188,7 +182,6 @@ void Game::CheckingGame() {
     }
   }
 
-  // ��� �������� ����������
   for (int j = 0; j < gridSize.y; ++j) {
     for (int i = 0; i < gridSize.x; ++i) {
       if (gridSize.x + j - i < gridSize.x) {
@@ -205,7 +198,6 @@ void Game::CheckingGame() {
     }
   }
 
-  // ��������, ���� �� ����
   int countStep = 0;
   for (int i = 0; i < gridSize.x; i++) {
     for (int j = 0; j < gridSize.y; j++) {
@@ -214,7 +206,6 @@ void Game::CheckingGame() {
     }
   }
 
-  // ��������� ���� �����������
   if (countStep == 0)
     state == GameState::end;
 }
@@ -228,7 +219,6 @@ void Game::NextStep() {
 }
 
 bool Game::MakeMove(Vector2 pos, char marker) {
-  // �������� �� ������ �� ������
   if (!IsCellEmpty(pos))
     return false;
 
@@ -237,7 +227,6 @@ bool Game::MakeMove(Vector2 pos, char marker) {
 }
 
 bool Game::IsCellEmpty(Vector2 pos) {
-  // �������� �����
   if (pos.x < 0 || pos.x >= gridSize.x) {
     return false;
   }
@@ -253,12 +242,10 @@ bool Game::IsCellEmpty(Vector2 pos) {
 }
 
 void Game::AI_SelectPosition() {
-  // ����� ������� ���� ��
   movePos = ai.GetBestMove(gameGrid, gridSize);
 
-  // �������� �������
   if (!IsCellEmpty(movePos))
-    AI_SelectPosition(); // ������ ������, ������� ������
+    AI_SelectPosition();
 }
 
 Game::Game() {
@@ -291,8 +278,8 @@ void Game::Logic() {
         do {
           view.PrintGame(gameGrid, gridSize.x, gridSize.y);
 
-          input.InputPosition(movePos.x, movePos.y); // ������� �������
-          done = IsCellEmpty(movePos); // �������� ������
+          input.InputPosition(movePos.x, movePos.y);
+          done = IsCellEmpty(movePos); 
 
           if (!done) {
             cout << "�������� ����!\n���������� �����!" << endl;
@@ -301,10 +288,10 @@ void Game::Logic() {
           }
         } while (!done);
 
-        MakeMove(movePos, playerMarker); // ������� ���
+        MakeMove(movePos, playerMarker);
       } else {
-        AI_SelectPosition(); // ������� �������
-        MakeMove(movePos, AIMarker); // ������� ���
+        AI_SelectPosition();
+        MakeMove(movePos, AIMarker);
       }
 
       CheckingGame();
