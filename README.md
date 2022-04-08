@@ -15,4 +15,4 @@
 ТЗ прикрепил ниже. В файле info есть вся теория и принцип работы. Также присутствует старая версия кода и курсовой, у неё большая производительность, но хуже алгоритмы.
 
 <h3 align="left">📃 ТЗ :</h3>
-<img src="https://raw.githubusercontent.com/hud0shnik/TicTacToe_AlphaBetaPruning/master/info/info.png" alt="ТЗ"/>
+<img src="https://raw.githubusercontent.com/hud0shnik/TicTacToe_AlphaBetaPruning/master/info/softwareRequirementsDocument.png" alt="ТЗ"/>
